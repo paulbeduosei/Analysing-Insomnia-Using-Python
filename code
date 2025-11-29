@@ -1,0 +1,14 @@
+import pandas as pd
+import numpy as np
+sleep_data = pd.read_csv("sleep_health_data.csv")
+print(sleep_data.columns)
+occupation_avg_sleep = sleep_data.groupby("Occupation")["Sleep Duration"].mean()
+lowest_sleep_occupation = occupation_avg_sleep.idxmin()
+print("Lowest Average Sleep Duration by Occupation:", lowest_sleep_occupation)
+occupation_avg_quality = sleep_data.groupby("Occupation")["Quality of Sleep"].mean()
+lowest_sleep_quality_occupation = occupation_avg_quality.idxmin()
+print("Lowest Average Sleep Quality by Occupation:", lowest_sleep_quality_occupation)
+same_occupation = (lowest_sleep_occupation == lowest_sleep_quality_occupation)
+print("Is it the same occupation as the one with the lowest individual record?", same_occupation)
+bmi_insomnia_ratios = sleep_data.groupby("BMI Category").apply(lambda x: round(x["Sleep Disorder"].eq("Insomnia").mean(), 2)).to_dict()
+print("BMI Category Insomnia Ratios:", bmi_insomnia_ratios)
